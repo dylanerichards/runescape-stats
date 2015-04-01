@@ -1,0 +1,36 @@
+require_relative "skills"
+require "net/http"
+require "csv"
+
+class Player
+  attr_reader :stats
+
+  def initialize(attrs = {})
+    @username = attrs[:username].downcase
+    @stats = skills
+
+    stats.each do |stat|
+      self.class.send :define_method, stat[0].downcase.to_sym do
+        puts "Level: #{stat[2].to_i}"
+        puts "Rank: #{stat[1].to_i}"
+        puts "Experience: #{stat[3].to_i}"
+      end
+    end
+  end
+
+  private
+
+  def skills
+    # [skill, rank, level, experience]
+    uri = URI("http://services.runescape.com/m=hiscore/index_lite.ws?player=#{@username}")
+    response = Net::HTTP.get(uri)
+    skills = format_stats(CSV.parse(response).take(27))
+  end
+
+  def format_stats(array_of_stats)
+    Skill::LIST.zip(array_of_stats).flatten.each_slice(4).to_a
+  end
+end
+
+brink = Player.new(username: "Brink")
+p brink.overall
