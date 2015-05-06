@@ -32,9 +32,3 @@ class Player
     Skill::LIST.zip(array_of_stats).flatten.each_slice(4).to_a
   end
 end
-
-brink = Player.new(username: "Brink")
-puts brink.attack
-puts brink.strength
-puts brink.defence
-
