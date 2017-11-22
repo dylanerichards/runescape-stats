@@ -3,10 +3,10 @@ require_relative "spec_helper"
 
 describe Player do
   describe "#initialize" do
-    brink = Player.new(username: "Brink")
+    survive = Player.new(username: "Survive")
 
     it "sets the username to the supplied username" do
-      expect(brink.username).to eq "brink"
+      expect(survive.username).to eq "survive"
     end
   end
 end
